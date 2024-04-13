@@ -1,16 +1,18 @@
 import React from "react";
 import { IGitHubUser } from "../model";
-import { List } from "antd";
+import { List, Spin } from "antd";
 
 interface IProps {
     users: IGitHubUser[];
+    loading: Boolean;
 }
 
-const ListUsers = ({ users }: IProps) => {
+const ListUsers = ({ users, loading }: IProps) => {
     if (users.length === 0) return <></>;
 
     return (
         <List
+            style={{ opacity: loading ? 0.6 : 1 }}
             itemLayout="horizontal"
             dataSource={users}
             renderItem={(item, index) => (

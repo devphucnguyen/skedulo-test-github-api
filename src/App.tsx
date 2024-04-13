@@ -1,7 +1,7 @@
 import { useDebounce } from "@uidotdev/usehooks";
-import { Input } from "antd";
+import { Input, Spin } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import CountDown from "./component/CountDown";
 import ListUsers from "./component/ListUser";
@@ -70,13 +70,12 @@ function App() {
 
     return (
         <div className="app">
-            <h2>Searching for github user...</h2>
+            <h2>Searching for GitHub user</h2>
             <Search
                 className="search-input"
-                placeholder="Searching for github user..."
+                placeholder="Please enter at least 3 characters"
                 disabled={timeToWait != 0}
                 size="large"
-                loading={loading}
                 value={searchTerm}
                 onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -91,7 +90,14 @@ function App() {
                     }}
                 />
             ) : (
-                <ListUsers users={users} />
+                <div style={{ position: "relative" }}>
+                    {loading && (
+                        <div style={{ position: "absolute", zIndex: 10, top: 50, left: "50%", transform: "translate(-50%, 0)" }}>
+                            <Spin tip="Loading" />
+                        </div>
+                    )}
+                    <ListUsers users={users} loading={loading} />
+                </div>
             )}
         </div>
     );
