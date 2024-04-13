@@ -7,6 +7,8 @@ interface IProps {
 }
 
 const ListUsers = ({ users }: IProps) => {
+    if (users.length === 0) return <></>;
+
     return (
         <List
             itemLayout="horizontal"
@@ -18,8 +20,14 @@ const ListUsers = ({ users }: IProps) => {
                         title={item.login}
                         description={
                             <>
-                                <div>{item.type}</div>
-                                <div>{item.score}</div>
+                                <div>
+                                    <b>Type: </b>
+                                    <span>{item.type}</span>
+                                </div>
+                                <div>
+                                    <b>Score: </b>
+                                    <span>{item.score}</span>
+                                </div>
                             </>
                         }
                     />

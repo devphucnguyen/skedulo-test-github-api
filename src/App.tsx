@@ -29,7 +29,7 @@ const getTimeToWait = () => {
 
 function App() {
     const [searchTerm, setSearchTerm] = useState("");
-    const debounceSearchTerm = useDebounce(searchTerm, 500);
+    const debounceSearchTerm = useDebounce(searchTerm, 300);
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<IGitHubUser[]>([]);
     const [timeToWait, setTimeToWait] = useState(getTimeToWait() || 0);
@@ -49,10 +49,6 @@ function App() {
         await axios
             .get("https://api.github.com/search/users", { params })
             .then((res) => {
-                if (res?.headers["x-ratelimit-remaining"]) {
-                    console.log("x-ratelimit-remaining", res?.headers["x-ratelimit-remaining"]);
-                }
-
                 if (res.data?.items && res?.data?.total_count) {
                     setUsers(res.data?.items);
                 }
@@ -73,12 +69,11 @@ function App() {
     };
 
     return (
-        <div className="App">
+        <div className="app">
             <h2>Searching for github user...</h2>
             <Search
                 className="search-input"
                 placeholder="Searching for github user..."
-                enterButton="Search"
                 disabled={timeToWait != 0}
                 size="large"
                 loading={loading}

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import sadIcon from "./error-sad-icon.jpg";
+console.log("sadIcon: ", sadIcon);
 
 function secondsToDHMS(seconds: number) {
     seconds = Number(seconds); // Ensure seconds is a number
@@ -37,13 +39,18 @@ const CountDown = ({ timeToWaitInSecond, onDone }: IProps) => {
     const { days, hours, minutes, remainingSeconds } = secondsToDHMS(remainingSecond);
 
     return (
-        <div>
-            <div>Oops! You have exceeded Github's request limit. Please try again in:</div>
-            <div style={{ margin: "20px auto", textAlign: "center", display: "flex" }}>
-                {days !== 0 && <div>{days}:</div>}
-                {hours !== 0 && <div>{hours.toString().padStart(2, "0")}:</div>}
-                {minutes !== 0 && <div>{minutes.toString().padStart(2, "0")}:</div>}
-                {remainingSeconds !== 0 && <div>{remainingSeconds.toString().padStart(2, "0")} seconds</div>}
+        <div style={{ display: "flex", alignItems: "center", flexDirection: "column", color: "grey" }}>
+            <img style={{ margin: "auto" }} width={200} height={200} src={sadIcon} alt="error-icon" />
+            <div style={{ textAlign: "center" }}>Oops! You have exceeded Github's request limit</div>
+
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <span style={{ marginRight: 10 }}>Please try again in: </span>
+                <b style={{ margin: "20px auto", textAlign: "center", display: "flex" }}>
+                    {days !== 0 && <div>{days}:</div>}
+                    {hours !== 0 && <div>{hours.toString().padStart(2, "0")}:</div>}
+                    {minutes !== 0 && <div>{minutes.toString().padStart(2, "0")}:</div>}
+                    {remainingSeconds !== 0 && <div>{remainingSeconds.toString().padStart(2, "0")}</div>}
+                </b>
             </div>
         </div>
     );
