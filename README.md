@@ -9,4 +9,4 @@ Features:
 - Table display with progress indicator
 - Resets results on input clear
 - Handle rate limit
-- Lazy load user avatar
+- Lazy load user's avatar
