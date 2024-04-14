@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import sadIcon from "./error-sad-icon.jpg";
-console.log("sadIcon: ", sadIcon);
 
 function secondsToDHMS(seconds: number) {
     seconds = Number(seconds); // Ensure seconds is a number

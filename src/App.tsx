@@ -1,10 +1,11 @@
 import { useDebounce } from "@uidotdev/usehooks";
 import { Input, Spin } from "antd";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import CountDown from "./component/CountDown";
 import ListUsers from "./component/ListUser";
+import emptyIcon from "./component/empty.png";
 import { IGitHubUser } from "./model";
 
 const { Search } = Input;
@@ -33,6 +34,7 @@ function App() {
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState<IGitHubUser[]>([]);
     const [timeToWait, setTimeToWait] = useState(getTimeToWait() || 0);
+    const [noResult, setNoResult] = useState(false);
 
     useEffect(() => {
         if (!debounceSearchTerm || debounceSearchTerm.length < 3) {
@@ -49,8 +51,11 @@ function App() {
         await axios
             .get("https://api.github.com/search/users", { params })
             .then((res) => {
-                if (res.data?.items && res?.data?.total_count) {
+                if (res.data?.items) {
                     setUsers(res.data?.items);
+                    if (res.data?.items?.length === 0) {
+                        setNoResult(true);
+                    }
                 }
             })
             .catch((err) => {
@@ -78,6 +83,7 @@ function App() {
                 size="large"
                 value={searchTerm}
                 onChange={(e) => {
+                    setNoResult(false);
                     setSearchTerm(e.target.value);
                 }}
             />
@@ -96,7 +102,14 @@ function App() {
                             <Spin tip="Loading" />
                         </div>
                     )}
-                    <ListUsers users={users} loading={loading} />
+                    {noResult ? (
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            <img height={150} src={emptyIcon} alt="emptyIcon" />
+                            <div>Sorry! Seems like no matches were found</div>
+                        </div>
+                    ) : (
+                        <ListUsers users={users} loading={loading} />
+                    )}
                 </div>
             )}
         </div>
